@@ -1,0 +1,19 @@
+# vim:ft=plumed
+# Descriptors
+phi: TORSION ATOMS=5,7,9,15
+psi: TORSION ATOMS=7,9,15,17
+
+GAMBES ...
+  ARG=phi,psi
+  NSTATES=2
+  FILENAME=state
+  PACE=500
+  LABEL=ext
+  BIAS_CUTOFF
+  CUTOFF=30
+  LAMBDA=1
+... GAMBES
+
+
+
+PRINT ARG=* STRIDE=100 FILE=COLVAR FMT=%.9f
