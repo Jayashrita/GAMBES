@@ -6,7 +6,7 @@ In this enhanced sampling method the bias potential <a href="https://www.codecog
 <p align="center">
 <a href="https://www.codecogs.com/eqnedit.php?latex=V({\boldsymbol{R}})&space;=&space;\frac{1}{\beta}&space;\log&space;\Big(&space;\sum\limits_{i=1}^M&space;\frac{Z^1}{Z^i}&space;\&space;p^i(\boldsymbol{d({\boldsymbol{R}})})&space;\Big)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?V({\boldsymbol{R}})&space;=&space;\frac{1}{\beta}&space;\log&space;\Big(&space;\sum\limits_{i=1}^M&space;\frac{Z^1}{Z^i}&space;\&space;p^i(\boldsymbol{d({\boldsymbol{R}})})&space;\Big)" title="V({\boldsymbol{R}}) = \frac{1}{\beta} \log \Big( \sum\limits_{i=1}^M \frac{Z^1}{Z^i} \ p^i(\boldsymbol{d({\boldsymbol{R}})}) \Big)" /></a>
 </p>
-where 
+where the probability of the entire space is estimated as a mixture of probability densities of metastable islands <a href="https://www.codecogs.com/eqnedit.php?latex=p^i(\boldsymbol{d})" target="_blank"><img src="https://latex.codecogs.com/gif.latex?p^i(\boldsymbol{d})" title="p^i(\boldsymbol{d})" /></a>. 
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=p^i(\boldsymbol{d})&space;\cong&space;\sum\limits_{k=1}^{K^i}&space;\pi_k^i&space;\&space;\mathcal{N}(\boldsymbol{d}|\boldsymbol{\mu}_k^i,\boldsymbol{\Sigma}_k^i)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?p^i(\boldsymbol{d})&space;\cong&space;\sum\limits_{k=1}^{K^i}&space;\pi_k^i&space;\&space;\mathcal{N}(\boldsymbol{d}|\boldsymbol{\mu}_k^i,\boldsymbol{\Sigma}_k^i)" title="p^i(\boldsymbol{d}) \cong \sum\limits_{k=1}^{K^i} \pi_k^i \ \mathcal{N}(\boldsymbol{d}|\boldsymbol{\mu}_k^i,\boldsymbol{\Sigma}_k^i)" /></a> 
 
