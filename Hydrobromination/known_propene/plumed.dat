@@ -1,5 +1,5 @@
 # vim:ft=plumed
-LOAD FILE=GAMBES.cpp
+LOAD FILE=../../GAMBES.cpp
 UNITS LENGTH=A TIME=fs
 
 d1:  DISTANCE ATOMS=10,11 NOPBC
