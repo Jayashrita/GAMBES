@@ -15,6 +15,6 @@ The relative height of each island is estimated on-the-fly using:
 <p align="center">
 <a href="https://www.codecogs.com/eqnedit.php?latex=\frac{Z^1}{Z^i}&space;=&space;\frac{\Big<&space;p^1(\boldsymbol{d({\boldsymbol{R}})})&space;e^{-\beta(U({\boldsymbol{R}})&plus;V({\boldsymbol{R}}))}\Big>_{V}}{\Big<&space;p^i(\boldsymbol{d({\boldsymbol{R}})})&space;e^{-\beta(U({\boldsymbol{R}})&plus;V({\boldsymbol{R}}))}\Big>_{V}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\frac{Z^1}{Z^i}&space;=&space;\frac{\Big<&space;p^1(\boldsymbol{d({\boldsymbol{R}})})&space;e^{-\beta(U({\boldsymbol{R}})&plus;V({\boldsymbol{R}}))}\Big>_{V}}{\Big<&space;p^i(\boldsymbol{d({\boldsymbol{R}})})&space;e^{-\beta(U({\boldsymbol{R}})&plus;V({\boldsymbol{R}}))}\Big>_{V}}" title="\frac{Z^1}{Z^i} = \frac{\Big< p^1(\boldsymbol{d({\boldsymbol{R}})}) e^{-\beta(U({\boldsymbol{R}})+V({\boldsymbol{R}}))}\Big>_{V}}{\Big< p^i(\boldsymbol{d({\boldsymbol{R}})}) e^{-\beta(U({\boldsymbol{R}})+V({\boldsymbol{R}}))}\Big>_{V}}" </a>
 </p>
-More details about the method can be found at: https://arxiv.org/abs/1909.07773
+More details about the method can be found at: https://arxiv.org/abs/1909.07773 or https://pubs.acs.org/doi/10.1021/acs.jpclett.0c01125 
 
 The code for this algorithm can be found at GAMBES.cpp , it is compatible with PLUMED v2.6. 
