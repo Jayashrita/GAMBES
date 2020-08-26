@@ -17,4 +17,8 @@ The relative height of each island is estimated on-the-fly using:
 </p>
 More details about the method can be found at: https://arxiv.org/abs/1909.07773 or https://pubs.acs.org/doi/10.1021/acs.jpclett.0c01125 
 
-The code for this algorithm can be found at GAMBES.cpp , it is compatible with PLUMED v2.6. 
+The code for this algorithm can be found at GAMBES.cpp , it is compatible with PLUMED v2.7-dev. 
+
+In order to run GAMBES for you system, first you have to run an unbiased molecular dynamics simulation from at least one known state and for all known states.
+Then, using the GAMBES-module.ipynb code, you can fit a Gaussian Mixture Model to your state using any number of descriptors.
+The final file generated using the notebook is an input for GAMBES in PLUMED. Generate such files for every known state of interest and name them as <file-name>.0 ,  <file-name>.1, ... , <file-name>.m where 0,1,...,m are your states. This <file-name> is an input for GAMBES.
