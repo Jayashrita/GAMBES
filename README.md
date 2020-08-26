@@ -23,7 +23,7 @@ The code for this algorithm can be found at GAMBES.cpp , it is compatible with P
 <ul>
 <li> First run unbiased molecular dynamics simulations from at least one known state and for all known states. </li>
 <li> Using the GAMBES-module.ipynb code, fit a Gaussian Mixture Model to your state using any number of descriptors. </li>
-<li> The final file generated using the notebook is an input for GAMBES in PLUMED. Generate similar files for every known state of interest and name them as < file-name >.0 ,  \< file-name \>.1, ... , \< file-name \>.m where 0,1,...,m are your states. This \< file-name \> is an input for GAMBES. </li>
-<li> Copy GAMBES.cpp in a folder containing your plumed input, the states generated \< file-name \>.* and all other necessary files for running your system. </li>
+<li> The final file generated using the notebook is an input for GAMBES in PLUMED. Generate similar files for every known state of interest and name them as < file-name >.0 ,  < file-name >.1, ... , < file-name >.m where 0,1,...,m are your states. This < file-name > is an input for GAMBES. </li>
+<li> Copy GAMBES.cpp in a folder containing your plumed input, the states generated < file-name >.* and all other necessary files for running your system. </li>
 <li> Run the simulation. </li>
  </ul>
