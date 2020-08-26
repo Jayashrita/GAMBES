@@ -19,16 +19,16 @@
    You should have received a copy of the GNU Lesser General Public License
    along with plumed.  If not, see <http://www.gnu.org/licenses/>.
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-#include "bias/core/PlumedMain.h"
-#include "bias/core/Atoms.h"
-#include "bias/core/ActionWithValue.h"
-#include "bias/core/ActionSet.h"
-#include "bias/Bias.h"
-#include "bias/ActionRegister.h"
-#include "bias/tools/Grid.h"
-#include "bias/tools/Exception.h"
-#include "bias/tools/File.h"
-#include "bias/tools/Matrix.h"
+#include "core/PlumedMain.h"
+#include "core/Atoms.h"
+#include "core/ActionWithValue.h"
+#include "core/ActionSet.h"
+#include "Bias.h"
+#include "ActionRegister.h"
+#include "tools/Grid.h"
+#include "tools/Exception.h"
+#include "tools/File.h"
+#include "tools/Matrix.h"
 #include <memory>
 #include <iostream>
 
@@ -96,8 +96,10 @@ void GAMBES::registerKeywords(Keywords& keys) {
   keys.add("optional","CUTOFF","the cutoff for bias");
   keys.add("optional","LAMBDA","the lambda for bias cutoff");
   keys.add("optional","STATIC_FACTORS","the constant factors for the Gaussians at which the simulation should be carried out if the bias is static");
-  keys.addOutputComponent("factors","FACTORS","the weighing factors for bias");
-  keys.addOutputComponent("averages","AVERAGES","the weighing factors for bias");
+  keys.addOutputComponent("_factors","default","two or more weighing factors for bias"
+                          "these quantities will named with  the gaussian number followed by "
+                          "the character string _factors. These quantities tell the user the value of the factor ");
+  keys.addOutputComponent("_averages","AVERAGES","two or more the averages");
 
   keys.addFlag("NOSPLINE",false,"specifies that no spline interpolation is to be used when calculating the energy and forces due to the external potential");
   keys.addFlag("BIAS_CUTOFF",false,"to specify if there should be a bias cutoff");
@@ -202,15 +204,16 @@ GAMBES::GAMBES(const ActionOptions& ao):
   }
 // add a component for factor
   for (unsigned n=0; n<n_states_; n++) {
-    string s = "factor."+std::to_string(n);
-    addComponent(s);
-    componentIsNotPeriodic(s);
-  }
-  for (unsigned n=0; n<n_states_; n++) {
-    string s = "average."+std::to_string(n);
+    string s = std::to_string(n)+"_factors";
     addComponent(s);
     componentIsNotPeriodic(s);
     averages_k.push_back(0.0);
+
+  }
+  for (unsigned n=0; n<n_states_; n++) {
+    string s = std::to_string(n)+"_averages";
+    addComponent(s);
+    componentIsNotPeriodic(s);
   }
 
   //construct biases from ActionWithValue with a component named bias
@@ -236,7 +239,7 @@ void GAMBES::calculate()
   if(int(iter)==0 ){get_factor();}
   double bias;
   vector<double> u(n_states_,0.0);
-  bias=update_bias(cv,der,u); //+bias_cutoff; 
+  bias=update_bias(cv,der,u); 
   setBias(bias);
 
   for(unsigned i=0; i<nargs; i++) {
@@ -249,13 +252,14 @@ void GAMBES::calculate()
   double energy=plumed.getAtoms().getEnergy() - energy_offset;
   double energy1=0.0;
   for(unsigned i=0; i<biases.size(); i++) energy1+=biases[i]->getOutputQuantity("bias");
+ // std::cout<<energy1<<" "<<bias<<std::endl;
   energy+=energy1;
 
   for(unsigned n=0; n<n_states_; n++) {
     double u_val =   -(std::log(u[n]))/beta;
     double diff = (- energy + u_val);
     averages_k[n]+=std::exp(beta*diff);
-    string s = "average."+std::to_string(n);
+    string s = std::to_string(n)+"_averages" ;
     getPntrToComponent(s)->set(averages_k[n]/average);
   }
 
@@ -382,7 +386,7 @@ double GAMBES::update_bias(vector<double>& cv,vector<double>& cvder,vector<doubl
   vector<vector<double>> der_in(n_states_,vector<double>(nargs,0.0));
   int count=0;
   for(unsigned n=0; n<n_states_; n++) {
-    string s = "factor."+std::to_string(n);
+    string s = std::to_string(n)+"_factors" ;
     getPntrToComponent(s)->set(factor[n]);
     for(unsigned k=0; k<n_gaussians_[n]; k++){
       u[n]+=resp[count]*P_k[count];
@@ -429,7 +433,7 @@ vector<double> GAMBES::get_factor()
     for(unsigned n=0; n<n_states_; n++) {
       factor_c[n]=expectation[0]/expectation[n];
      }
-  }
+    }
   else{
      for(unsigned n=0; n<n_states_; n++) {
        factor_c[n]=static_factors[n];
@@ -440,3 +444,5 @@ vector<double> GAMBES::get_factor()
 
 }
 }
+
+
