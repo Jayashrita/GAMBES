@@ -1,5 +1,5 @@
 # vim:ft=plumed
-LOAD FILE=GAMBES.cpp
+LOAD FILE=../GAMBES.cpp
 
 # Descriptors
 phi: TORSION ATOMS=5,7,9,15
