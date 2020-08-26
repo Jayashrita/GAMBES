@@ -2,3 +2,4 @@ Instructions
 1. state.0 is the Gaussian mixture input file for C7ax-C5 basin
 2. state.1 is the Gaussian mixture input file for C7eq basin
 3. topol.tpr is the tpr file for gromacs, it runs for 10 ns
+4. Copy the GAMBES.cpp file in the directory before running Plumed.
