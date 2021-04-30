@@ -282,8 +282,11 @@ double GAMBES::update_bias(vector<double>& cv,vector<double>& cvder,vector<doubl
 
   for(unsigned i=0;i<nargs;i++){
     isperiodic[i]=getPntrToArgument(i)->isPeriodic();
-    double min,max; getPntrToArgument(i)->getDomain(min,max);
-    periodicity[i]=max-min;
+    periodicity[i]= 2*pi ;
+    if(isperiodic[i]){
+      double min,max; getPntrToArgument(i)->getDomain(min,max);
+      periodicity[i]=max-min;
+    }
   } //periodicity made more general
   vector<Matrix<double>> invcov_k(tot_gaussians, Matrix<double>(nargs,nargs)) ;
   vector<double> P_k(tot_gaussians,0.0);
