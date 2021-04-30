@@ -282,8 +282,9 @@ double GAMBES::update_bias(vector<double>& cv,vector<double>& cvder,vector<doubl
 
   for(unsigned i=0;i<nargs;i++){
     isperiodic[i]=getPntrToArgument(i)->isPeriodic();
-    periodicity[i]= 2*pi ;
-  } //periodicity assumed to be 2*pi whenever periodic
+    double min,max; getPntrToArgument(i)->getDomain(min,max);
+    periodicity[i]=max-min;
+  } //periodicity made more general
   vector<Matrix<double>> invcov_k(tot_gaussians, Matrix<double>(nargs,nargs)) ;
   vector<double> P_k(tot_gaussians,0.0);
   vector<vector<double>> der_P_k(tot_gaussians,vector<double>(nargs,0.0));
@@ -303,6 +304,10 @@ double GAMBES::update_bias(vector<double>& cv,vector<double>& cvder,vector<doubl
     vector<double> diff(nargs) ;
     for(unsigned int i=0; i<nargs; i++){
       diff[i] = cv[i]-mu_k[n][i];
+      if(isperiodic[i]){
+        if(diff[i]>0.5*periodicity[i]){ diff[i] -= periodicity[i] ; } 
+        if(diff[i]<=-0.5*periodicity[i]){ diff[i] += periodicity[i] ; } 
+      }
     }
     Matrix<double> diff_(1,nargs);
     diff_.setFromVector(diff);
@@ -319,52 +324,6 @@ double GAMBES::update_bias(vector<double>& cv,vector<double>& cvder,vector<doubl
     for(unsigned int i=0; i<nargs; i++){
         der_P_k[n][i]+=-0.5*P_k[n]*(out1(0,i)+out2(i,0));
     }
-// Taking care of periodicity
-    for(unsigned int i=0; i<nargs; i++){
-      if(isperiodic[i]){
-        for(unsigned int j=0; j<2; j++){
-    			vector<double> diff_image(nargs) ;
-          double value_image;
-    			vector<double> vder_image(nargs);
-          for(unsigned int k=0; k<nargs; k++){                        
-      			if(j==0){ 
-              if(k==i){
-                diff_image[k] = cv[k] - mu_k[n][k] - periodicity[k] ;
-              }
-              else{
-                diff_image[k] = cv[k] - mu_k[n][k];
-              }
-            }
-            if(j==1){
-              if(k==i){
-                diff_image[k] = cv[k] - mu_k[n][k] + periodicity[k] ;
-              }
-              else{
-                diff_image[k] = cv[k] - mu_k[n][k];
-              } 
-            }                      
-          }                          
-          Matrix<double> diff_(1,nargs);
-		      diff_.setFromVector(diff_image);
-		      Matrix<double> transpose_diff_ ;
-		      transpose(diff_,transpose_diff_);
-		      Matrix<double> out1;
-		      mult(diff_, invcov_k[n], out1);
-		      Matrix<double> out2;
-		      mult(invcov_k[n],transpose_diff_, out2);
-		      Matrix<double> out;
-		      mult(out1,transpose_diff_, out);
-		      value_image = std::exp(-0.5*out(0,0))/normalize;
-		 
-		      for(unsigned int i1=0; i1<nargs; i1++){
-		           vder_image[i1]+=-0.5*value_image*(out1(0,i1)+out2(i1,0));
-            der_P_k[n][i1]+=vder_image[i1];
-          }
-          P_k[n]+=value_image;
-        }
-      }
-    }
-
     //cutoff
     if(cutoff==true){
       double cut_at = std::exp(-beta*bias_cutoff);
@@ -401,7 +360,7 @@ double GAMBES::update_bias(vector<double>& cv,vector<double>& cvder,vector<doubl
   }
   double nbias;
   bias = +(std::log(bias))/beta;
-  nbias = bias - (std::log(norm_gaussians*n_states_))/beta;
+  nbias = bias + bias_cutoff ;//- (std::log(norm_gaussians*n_states_))/beta;
 
   for(unsigned i=0;i<nargs;i++){
     double der=0.0;
