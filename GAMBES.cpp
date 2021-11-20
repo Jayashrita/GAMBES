@@ -120,7 +120,7 @@ GAMBES::GAMBES(const ActionOptions& ao):
   norm_gaussians(0),
   iter(0),
   temp(0),
-  lambda(0),
+  lambda(0.1),
   energy_offset(0.0)
 { 
  
